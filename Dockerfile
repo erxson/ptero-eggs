@@ -17,4 +17,4 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /home/container
 COPY ./entrypoint.sh /entrypoint.sh
 
-CMD ["/entrypoint.sh"]
+CMD ["/bin/bash", "/entrypoint.sh"]
