@@ -1,20 +1,15 @@
-FROM bitnami/minideb
+FROM alpine:latest
 
-RUN apt-get update && apt-get install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2 wget
-RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list
-RUN wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add -
-RUN apt-get update
-RUN apt-get install -y \
-    php8.0-fpm php8.0 php8.0-common php8.0-zip php8.0-xml \
-    php8.0-tidy php8.0-sybase php8.0-sqlite3 php8.0-soap php8.0-snmp php8.0-readline \
-    php8.0-pspell php8.0-odbc php8.0-mysql php8.0-mbstring php8.0-ldap php8.0-intl \
-    php8.0-interbase php8.0-imap php8.0-gmp php8.0-gd php8.0-fpm php8.0-enchant \
-    php8.0-dev php8.0-dba php8.0-curl php8.0-cli php8.0-cgi php8.0-bz2 php8.0-bcmath \
-    nginx openjdk-17-jre-headless nodejs python3
+RUN apk add --no-cache curl ca-certificates nginx openjdk17-jre-headless nodejs python3
+RUN apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/ php8 php8-xml php8-fpm php8-session php8-soap php8-openssl php8-gmp php8-pdo_odbc php8-json php8-dom php8-pdo php8-zip php8-mysqli php8-sqlite3 php8-pdo_pgsql php8-bcmath php8-gd php8-odbc php8-pdo_mysql php8-pdo_sqlite php8-gettext php8-xmlreader php8-bz2 php8-iconv php8-pdo_dblib php8-curl php8-ctype php8-phar php8-fileinfo php8-mbstring php8-tokenizer php8-simplexml
+COPY --from=composer:latest  /usr/bin/composer /usr/bin/composer
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+USER container
+ENV  USER container
+ENV HOME /home/container
 
 WORKDIR /home/container
 COPY ./entrypoint.sh /entrypoint.sh
 
-CMD ["/bin/bash", "/entrypoint.sh"]
+
+CMD ["/bin/ash", "/entrypoint.sh"]
