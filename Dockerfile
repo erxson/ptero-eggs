@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM gcr.io/distroless/static-debian11
 
 RUN apt update && apt install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2 wget
 RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list
