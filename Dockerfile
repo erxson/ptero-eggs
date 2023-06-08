@@ -1,10 +1,10 @@
 FROM bitnami/minideb
 
-RUN apt update && apt install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2 wget
+RUN apt-get update && apt-get install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2 wget
 RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list
 RUN wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add -
-RUN apt update
-RUN apt install -y \
+RUN apt-get update
+RUN apt-get install -y \
     php8.0-fpm php8.0 php8.0-common php8.0-zip php8.0-xml \
     php8.0-tidy php8.0-sybase php8.0-sqlite3 php8.0-soap php8.0-snmp php8.0-readline \
     php8.0-pspell php8.0-odbc php8.0-mysql php8.0-mbstring php8.0-ldap php8.0-intl \
